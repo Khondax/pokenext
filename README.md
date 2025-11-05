@@ -3,6 +3,7 @@ This repository contains a simple but useful pokedex in NextJS for a technical c
 Este repositorio contiene una pokedex en NextJS para una prueba técnica.
 
 ## Tareas pendientes:
+```
 1. Estructura básica de desarrollo
 2. Atacar la [PokeAPI](https://pokeapi.co/docs/v2) para obtener los datos de Pokémons por region?
   1. Listado de todos los Pokémon, ordenados por ID por defecto
@@ -24,9 +25,9 @@ Este repositorio contiene una pokedex en NextJS para una prueba técnica.
 
 7. Añadir documentación de uso y despliegue/ejecución en local
 8. Añadir tests
-9. Desplegar en Vercel??
-10. Mejorar la interfaz
-
+9. Mejorar la interfaz
+10. Desplegar en Vercel??
+```
 
 ## Getting Started
 
