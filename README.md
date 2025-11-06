@@ -31,7 +31,12 @@ Este repositorio contiene una pokedex en NextJS para una prueba técnica.
 
 ## Getting Started
 
-First, run the development server:
+First, run this command to pre-download all pokemons in a JSON file to avoid a DDOS attack on PokeAPI's servers
+```bash
+node .\app\services\downloadPokemonData.ts
+```
+
+Next, run the development server:
 
 ```bash
 npm run dev
