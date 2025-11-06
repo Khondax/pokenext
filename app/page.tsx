@@ -1,22 +1,48 @@
-import Image from "next/image";
-import { Suspense } from "react";
-import { pokemonServiceGetAll } from "./services/pokemonService";
+
+import { pokemonServiceGetAll, pokemonServiceGetAllFile } from "./services/pokemonService";
 import PokemonList from "./components/pokemonList";
 import LoadingSpinner from "./components/loadingSpinner";
+import { PokemonDetailsPaginated } from "./interfaces/pokemonInterface";
+
+const readFromFile = true
 
 export default async function HomePage() {
 
-  const pokemonGetAll = pokemonServiceGetAll()
+  let pokemonGetService: PokemonDetailsPaginated
+
+  if (readFromFile) {
+    const pokemonFileObject = await pokemonServiceGetAllFile()
+
+    pokemonGetService = {
+      pokemonData: pokemonFileObject,
+      hasNextPage: false
+    }
+  } else {
+    pokemonGetService = await pokemonServiceGetAll()
+  }
 
   return (
     <div>
       <h1>Pokémon List</h1>
-      <Suspense fallback={<LoadingSpinner />}>
-        <PokemonList pokemonData={pokemonGetAll}/>
-      </Suspense>
+      <PokemonList pokemonData={pokemonGetService} readFromFile={readFromFile}/>
     </div>
   );
 }
+
+// export default function HomePage() {
+//     // const pokemonGetAll = pokemonServiceGetAllFile()
+//     const pokemonGetAll = pokemonServiceGetAll()
+  
+//     return (
+//       <div>
+//         <h1>Pokémon List</h1>
+//         <Suspense fallback={<LoadingSpinner />}>
+//           <PokemonList pokemonData={pokemonGetAll}/>
+//         </Suspense>
+//       </div>
+//     );
+
+// }
 
   // OLD HOMEPAGE
   // return (

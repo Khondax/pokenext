@@ -4,6 +4,13 @@ export interface Pokemon {
   id?: number;
 }
 
+export interface PokemonDetailsPaginated {
+  pokemonData: PokemonDetails[];
+  hasNextPage: boolean;
+  offset?: number;
+  limit?: number;
+}
+
 export interface PokemonDetails {
   id: number;
   name: string;
@@ -14,7 +21,7 @@ export interface PokemonDetails {
   types: string[];
   isLegendary: boolean;
   evolutionChain: EvolutionChainData;
-  // TODO: sprites: Sprites;
+  sprites?: Sprites;
 }
 
 export interface PokemonSpeciesDetails {
@@ -30,35 +37,35 @@ export interface PokemonStats {
   stats: Stat[];
   height: number;
   weight: number;
-  // sprites: string;
+  sprites?: Sprites;
 }
 
 export interface PokemonSpeciesDetailsRaw {
-  baseHappiness: number;
-  captureRate: number;
+  base_happiness: number;
+  capture_rate: number;
   color: Color;
-  eggGroups: Color[];
+  egg_groups: Color[];
   evolution_chain: EvolutionChain;
-  evolvesFromSpecies: null;
-  flavorTextEntries: FlavorTextEntry[];
-  formDescriptions: any[];
-  formsSwitchable: boolean;
-  genderRate: number;
+  evolves_from_species: null;
+  flavor_text_entries: FlavorTextEntry[];
+  form_descriptions: any[];
+  forms_switchable: boolean;
+  gender_rate: number;
   genera: Genus[];
   generation: Color;
-  growthRate: Color;
+  growth_rate: Color;
   habitat: Color;
-  hasGenderDifferences: boolean;
-  hatchCounter: number;
+  has_gender_differences: boolean;
+  hatch_counter: number;
   id: number;
-  isBaby: boolean;
-  isLegendary: boolean;
-  isMythical: boolean;
+  is_baby: boolean;
+  is_legendary: boolean;
+  is_mythical: boolean;
   name: string;
   names: Name[];
   order: number;
-  palParkEncounters: PalParkEncounter[];
-  pokedexNumbers: PokedexNumber[];
+  pal_park_encounters: PalParkEncounter[];
+  pokedex_numbers: PokedexNumber[];
   shape: Color;
   varieties: Variety[];
 }
@@ -73,7 +80,7 @@ export interface EvolutionChain {
 }
 
 export interface FlavorTextEntry {
-  flavorText: string;
+  flavor_text: string;
   language: Color;
   version: Color;
 }
@@ -90,17 +97,17 @@ export interface Name {
 
 export interface PalParkEncounter {
   area: Color;
-  baseScore: number;
+  base_score: number;
   rate: number;
 }
 
 export interface PokedexNumber {
-  entryNumber: number;
+  entry_number: number;
   pokedex: Color;
 }
 
 export interface Variety {
-  isDefault: boolean;
+  is_default: boolean;
   pokemon: Color;
 }
 
@@ -112,4 +119,9 @@ export interface Stat {
 export interface EvolutionChainData {
   id: number;
   evolutions: Pokemon[];
+}
+
+export interface Sprites {
+  frontDefault?: string
+  backDefault?: string;
 }
