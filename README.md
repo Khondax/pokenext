@@ -26,6 +26,9 @@ Este repositorio contiene una pokedex en NextJS para una prueba técnica.
 7. Añadir documentación de uso y despliegue/ejecución en local
 8. Añadir tests
 9. Mejorar la interfaz
+  1. Pintar las tarjetas de cada pokemon con el color del tipo
+  2. Mover todos los componentes posibles a ficheros individuales
+  3. Incluyendo funciones
 10. Desplegar en Vercel??
 ```
 
