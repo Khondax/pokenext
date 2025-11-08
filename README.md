@@ -27,8 +27,11 @@ Este repositorio contiene una pokedex en NextJS para una prueba técnica.
 8. Añadir tests
 9. Mejorar la interfaz
   1. Pintar las tarjetas de cada pokemon con el color del tipo
-  2. Mover todos los componentes posibles a ficheros individuales
-  3. Incluyendo funciones
+  2. Mejorar modal
+  3. Mover todos los componentes posibles a ficheros individuales
+  4. Incluyendo funciones
+  5. Crear un fichero ts para mapear los tipos (están en inglés) y las generaciones (ahora son numéricas)
+  6. Añadir un botón para volver arriba del todo
 10. Desplegar en Vercel??
 ```
 

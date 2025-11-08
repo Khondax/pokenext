@@ -3,14 +3,14 @@
 import { use, useEffect, useState } from "react";
 import PokemonCard from "./pokemonCard";
 import { pokemonServiceGetAll } from "../services/pokemonService";
-import { PokemonDetailsPaginated } from "../interfaces/pokemonInterface";
+import { PokemonDetailsPaginated, Type } from "../interfaces/pokemonInterface";
 import PokemonDetailsItem from "./pokemonDetails";
 import Select, { StylesConfig }  from 'react-select'
+import { getType } from "../services/pokemonDataLogic";
 
 export default function PokemonList({pokemonData, readFromFile}: {pokemonData: PokemonDetailsPaginated, readFromFile: boolean}) {
   const [pokemons, setPokemons] = useState(pokemonData.pokemonData);
   const [loading, setLoading] = useState(false); 
-  const [activeModal, setActiveModal] = useState(null);
   const [filter, setFilter] = useState('')
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]); // Filtro por tipos (múltiples)
   const [typesList, setTypesList] = useState<any[]>([]); // Lista de tipos disponibles
@@ -43,13 +43,6 @@ export default function PokemonList({pokemonData, readFromFile}: {pokemonData: P
     }, []);
   }
 
-  const handleOpenCard = (pokemonIndex) => {
-    setActiveModal(pokemonIndex)
-  }
-  const handleCloseCard = () => {
-    setActiveModal(null)
-  }
-
   const handleFilterChange = (e) => {
     setFilter(e.target.value.toLowerCase());
   }
@@ -66,7 +59,7 @@ export default function PokemonList({pokemonData, readFromFile}: {pokemonData: P
 
   const filteredPokemons = pokemons.filter((pokemon) =>  {
     const matchesName = pokemon.evolutionChain.evolutions.some(element => element.name.toLowerCase().includes(filter))
-    const matchesType = selectedTypes.length === 0 || pokemon.types.some(type => selectedTypes.includes(type.toLowerCase()))
+    const matchesType = selectedTypes.length === 0 || pokemon.types.some(type => selectedTypes.includes(type.name.toLowerCase()))
     const matchesGeneration = selectedGeneration.length === 0 || selectedGeneration.includes(pokemon.generation)
 
     return matchesName && matchesType && matchesGeneration
@@ -74,14 +67,16 @@ export default function PokemonList({pokemonData, readFromFile}: {pokemonData: P
 
   // Crear una lista de tipos de Pokémon únicos (sin repetidos)
   useEffect(() => {
-    const allTypes = [...new Set(pokemons.map(pokemon => pokemon.types).flat())]
+    // const allTypes = [...new Set(pokemons.map(pokemon => pokemon.types).flat())]
+    const allTypes = [...new Set(pokemons.map(pokemon => pokemon.types.map(type => type.name)).flat())]
     const typesOptions = allTypes.map(type => {
-      return {value: type, label: type, color: ''}
+      const pokemonType = getType(type)
+      return {value: pokemonType.name.toLowerCase(), label: pokemonType.name, color: pokemonType.color}
     })
 
     const allGenerations = [...new Set(pokemons.map(pokemon => pokemon.generation).flat())]
     const generationsOptions = allGenerations.map(generation => {
-      return {value: Number(generation), label: String(generation), color: ''}
+      return {value: generation, label: generation}
     })
 
     setTypesList(typesOptions); // Establece los tipos únicos disponibles
@@ -112,13 +107,10 @@ export default function PokemonList({pokemonData, readFromFile}: {pokemonData: P
             onChange={handleGenerationChange}
             // styles={colourStyles}
           />
-          {/* <button>Ordenar por ID</button> */}
         </div>
         {filteredPokemons.map((pokemon, index) => (
           <div key={index} className="">
-            <PokemonCard onClick={() => handleOpenCard(index)} pokemon={pokemon}/>
-            <PokemonDetailsItem isOpen={activeModal === index} pokemonDetailsItem={pokemon} onClose={handleCloseCard}/>
-            <p>--------</p>
+            <PokemonCard pokemon={pokemon} />
           </div>
         ))}
       </div>

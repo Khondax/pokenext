@@ -29,21 +29,6 @@ export default async function HomePage() {
   );
 }
 
-// export default function HomePage() {
-//     // const pokemonGetAll = pokemonServiceGetAllFile()
-//     const pokemonGetAll = pokemonServiceGetAll()
-  
-//     return (
-//       <div>
-//         <h1>Pokémon List</h1>
-//         <Suspense fallback={<LoadingSpinner />}>
-//           <PokemonList pokemonData={pokemonGetAll}/>
-//         </Suspense>
-//       </div>
-//     );
-
-// }
-
   // OLD HOMEPAGE
   // return (
   //   <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans">

@@ -1,24 +1,53 @@
-'use client'
+"use client";
 import Image from "next/image";
-import PokemonDetailsItem from "./pokemonDetails";
 import { PokemonDetails } from "../interfaces/pokemonInterface";
-import "@/app/styles/card.css";
+import PokemonDetailsItem from "./pokemonDetails";
+import { useState } from "react";
 
-export default function PokemonCard({ onClick, pokemon }: { onClick: any, pokemon: PokemonDetails }) {
+export default function PokemonCard({
+  pokemon
+}: {
+  pokemon: PokemonDetails;
+}) {
+
+  const [activeModal, setActiveModal] = useState(null);
+
+  const handleOpenCard = (pokemonIndex) => {
+    setActiveModal(pokemonIndex)
+  }
+
+  const handleCloseCard = () => {
+    setActiveModal(null)
+  }
+
   return (
-    <div className="cardContainer" onClick={onClick}>
-      <div className="card">
-        <h1 className="text-2xl font-bold mb-4">{pokemon.name}</h1>
+    <div className="cardContainer">
+      <div className="card" onClick={() => handleOpenCard(pokemon.id)}>
+        <h1 className="text-1xl font-bold mb-4">
+          {pokemon.name.toUpperCase()}
+        </h1>
+        <p>{pokemon.isLegendary ? "Pokemon legendario" : ""}</p>
         <Image
-          className="rounded-full border-b-2"
+          className=""
           src={pokemon.sprites?.frontDefault}
           alt="pokemon.name"
           width={150}
           height={150}
         />
-        <p>Peso: {pokemon.weight}</p>
-        <p>Es legendario: {String(pokemon.isLegendary)}</p>
+        <p>{pokemon.generation}</p>
+        <div>
+          {pokemon.types.map((type, index) => (
+            <p key={index}>{type.name}</p>
+          ))}
+        </div>
+        <p>Peso: {pokemon.weight / 10} kilos</p>
+        <p>Altura: {pokemon.height / 10} metros</p>
       </div>
+      <PokemonDetailsItem
+        isOpen={activeModal === pokemon.id}
+        pokemonDetailsItem={pokemon}
+        onClose={handleCloseCard}
+      />
     </div>
   );
 }

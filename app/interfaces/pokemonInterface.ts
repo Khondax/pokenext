@@ -2,6 +2,7 @@ export interface Pokemon {
   name: string;
   url?: string;
   id?: number;
+  sprites?: Sprites
 }
 
 export interface PokemonDetailsPaginated {
@@ -14,11 +15,11 @@ export interface PokemonDetailsPaginated {
 export interface PokemonDetails {
   id: number;
   name: string;
-  generation: number;
+  generation: string;
   height: number;
   weight: number;
   stats: Stat[];
-  types: string[];
+  types: Type[];
   isLegendary: boolean;
   evolutionChain: EvolutionChainData;
   sprites?: Sprites;
@@ -27,13 +28,13 @@ export interface PokemonDetails {
 export interface PokemonSpeciesDetails {
   id: number;
   name: string;
-  generation: number;
+  generation: string;
   isLegendary: boolean;
   evolutionChainID: number;
 }
 
 export interface PokemonStats {
-  types: string[];
+  types: Type[];
   stats: Stat[];
   height: number;
   weight: number;
@@ -113,7 +114,14 @@ export interface Variety {
 
 export interface Stat {
   name: string;
-  baseStat: number;
+  baseStat?: number;
+  translatedName?: string;
+}
+
+export interface Type {
+  name: string;
+  translatedName?: string;
+  color?: string;
 }
 
 export interface EvolutionChainData {
@@ -122,6 +130,6 @@ export interface EvolutionChainData {
 }
 
 export interface Sprites {
-  frontDefault?: string
+  frontDefault?: string;
   backDefault?: string;
 }
