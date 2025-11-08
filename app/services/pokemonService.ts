@@ -129,7 +129,7 @@ export async function pokemonServiceGetStatsData(
     return {
       name: element.stat.name,
       baseStat: element.base_stat,
-      translatedName: getStatTranslatedName(element.stat_name)
+      translatedName: getStatTranslatedName(element.stat.name)
     };
   });
 

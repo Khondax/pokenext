@@ -10,14 +10,22 @@ export default function PokemonCard({
   pokemon: PokemonDetails;
 }) {
 
-  const [activeModal, setActiveModal] = useState(null);
+  const [modalStack, setModalStack] = useState<string[]>([]);
 
   const handleOpenCard = (pokemonIndex) => {
-    setActiveModal(pokemonIndex)
+    setModalStack([pokemonIndex])
   }
 
   const handleCloseCard = () => {
-    setActiveModal(null)
+    setModalStack([])
+  }
+
+  const handleOpenNestedCard = (pokemonIndex) => {
+    setModalStack(prev => [...prev, pokemonIndex])
+  }
+
+  const handleCloseNestedCard = () => {
+    setModalStack(prev => prev.slice(0, -1))
   }
 
   return (
@@ -37,17 +45,21 @@ export default function PokemonCard({
         <p>{pokemon.generation}</p>
         <div>
           {pokemon.types.map((type, index) => (
-            <p key={index}>{type.name}</p>
+            <p key={index}>{type.translatedName}</p>
           ))}
         </div>
         <p>Peso: {pokemon.weight / 10} kilos</p>
         <p>Altura: {pokemon.height / 10} metros</p>
       </div>
-      <PokemonDetailsItem
-        isOpen={activeModal === pokemon.id}
-        pokemonDetailsItem={pokemon}
-        onClose={handleCloseCard}
-      />
+      {modalStack.map((pokemonName, index) => (
+        <PokemonDetailsItem
+          key={`${pokemonName}-${index}`}
+          pokemonName={pokemonName}
+          pokemonDetailsItem={index === 0 ? pokemon : undefined}
+          onClose={index === modalStack.length - 1 ? handleCloseNestedCard : undefined}
+          onOpenEvolution={handleOpenNestedCard}
+        />
+      ))}
     </div>
   );
 }

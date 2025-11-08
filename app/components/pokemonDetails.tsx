@@ -1,41 +1,90 @@
 "use client";
-import { use, useState } from "react";
-import { pokemonServiceGetURL } from "../services/pokemonService";
+import { use, useEffect, useState } from "react";
+import { pokemonServiceGetDetailsByName, pokemonServiceGetURL } from "../services/pokemonService";
 import { PokemonDetails } from "@/app/interfaces/pokemonInterface";
 import Image from "next/image";
 
 export default function PokemonDetailsItem({
-  isOpen,
+  pokemonName,
   pokemonDetailsItem,
   onClose,
+  onOpenEvolution,
 }: {
-  isOpen: any;
-  pokemonDetailsItem: PokemonDetails;
-  onClose: any;
+  pokemonName?: string
+  pokemonDetailsItem?: PokemonDetails;
+  onClose: any
+  onOpenEvolution?: (pokemonName: string) => void
 }) {
-  if (!isOpen) return null;
+
+  const [currentPokemon, setCurrentPokemon] = useState<PokemonDetails | null>(pokemonDetailsItem || null)
+  const [loading, setLoading] = useState(false)
+
+  // Si se proporciona un pokemonId pero no pokemonDetailsItem, cargar los datos
+  useEffect(() => {
+    if (pokemonName && !pokemonDetailsItem) {
+      setLoading(true);
+      // Buscar el pokemon por ID en la cadena evolutiva del pokemon inicial
+      // O hacer una llamada a la API si es necesario
+      loadPokemonByName(pokemonName);
+    }
+  }, [pokemonName, pokemonDetailsItem]);
+
+  const loadPokemonByName = async (evolutionName: string) => {
+    try {
+      // Si tenemos pokemonDetailsItem, buscar en su cadena evolutiva primero
+      const fullDetails = await pokemonServiceGetDetailsByName(evolutionName);
+      setCurrentPokemon(fullDetails);
+    } catch (error) {
+      console.error("Error loading pokemon:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEvolutionClick = (evolutionID: string) => {
+    if (onOpenEvolution) {
+      onOpenEvolution(evolutionID)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div 
+        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+      >
+        <div className="bg-white p-4 rounded">
+          <p>Cargando...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!currentPokemon) return null
+
+  console.log('DAME EL POKEMON ACTUAL')
+  console.log(currentPokemon)
 
   return (
     <div className="max-w-2xl mx-auto">
       <div className="border rounded-lg p-6">
-        <h1 className="text-2xl font-bold mb-4">{pokemonDetailsItem.name}</h1>
+        <h1 className="text-2xl font-bold mb-4">{currentPokemon.name}</h1>
         <Image
           className=""
-          src={pokemonDetailsItem.sprites?.frontDefault}
+          src={currentPokemon.sprites?.frontDefault}
           alt="pokemon.name"
           width={150}
           height={150}
         />
-        <p>{pokemonDetailsItem.generation}</p>
+        <p>{currentPokemon.generation}</p>
         <div>
-          {pokemonDetailsItem.types.map((type, index) => (
+          {currentPokemon.types.map((type, index) => (
             <p key={index}>{type.name}</p>
           ))}
         </div>
         <br />
         <div>
-          {pokemonDetailsItem.evolutionChain.evolutions.map((evolution) => (
-            <div className="evolutionCard" key={evolution.id}>
+          {currentPokemon.evolutionChain.evolutions.map((evolution) => (
+            <div className="evolutionCard" key={evolution.id} onClick={() => handleEvolutionClick(evolution.name)}>
               <Image
                 className=""
                 src={evolution.sprites?.frontDefault}
@@ -48,7 +97,7 @@ export default function PokemonDetailsItem({
         </div>
         <br />
         <div>
-          {pokemonDetailsItem.stats.map((stat, index) => (
+          {currentPokemon.stats.map((stat, index) => (
             <p key={index}>
               {stat.translatedName}:{stat.baseStat}
             </p>
