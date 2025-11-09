@@ -13,7 +13,7 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "noImplicitAny": false, // temporarily, just for my own sanity
+    "noImplicitAny": true,
     "plugins": [
       {
         "name": "next"
@@ -31,5 +31,8 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "external_scripts"
+  ]
 }

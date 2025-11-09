@@ -2,55 +2,88 @@
 import Image from "next/image";
 import { PokemonDetails } from "../interfaces/pokemonInterface";
 import PokemonDetailsItem from "./pokemonDetails";
-import { useState } from "react";
+import { useState, memo } from "react";
 
-export default function PokemonCard({
-  pokemon
-}: {
+interface PokemonCardProps {
   pokemon: PokemonDetails;
-}) {
+}
+
+const PokemonCard = memo(function PokemonCard({ pokemon }: PokemonCardProps) {
 
   const [modalStack, setModalStack] = useState<string[]>([]);
 
-  const handleOpenCard = (pokemonIndex) => {
-    setModalStack([pokemonIndex])
+  const handleOpenCard = (pokemonName: string) => {
+    setModalStack([pokemonName])
   }
 
-  const handleCloseCard = () => {
-    setModalStack([])
-  }
-
-  const handleOpenNestedCard = (pokemonIndex) => {
-    setModalStack(prev => [...prev, pokemonIndex])
+  const handleOpenNestedCard = (pokemonName: string) => {
+    setModalStack(prev => [...prev, pokemonName])
   }
 
   const handleCloseNestedCard = () => {
     setModalStack(prev => prev.slice(0, -1))
   }
 
+  // Get the primary type for theming
+  const primaryType = pokemon.types[0]?.name?.toLowerCase() || 'normal';
+  
   return (
-    <div className="cardContainer">
-      <div className="card" onClick={() => handleOpenCard(pokemon.id)}>
-        <h1 className="text-1xl font-bold mb-4">
-          {pokemon.name.toUpperCase()}
-        </h1>
-        <p>{pokemon.isLegendary ? "Pokemon legendario" : ""}</p>
+    <>
+      <div 
+        className="pokemon-card" 
+        onClick={() => handleOpenCard(pokemon.name)}
+        data-primary-type={primaryType}
+      >
+        {/* Pokemon ID */}
+        <div className="pokemon-id">
+          #{pokemon.id.toString().padStart(3, '0')}
+        </div>
+
+        {/* Pokemon Name */}
+        <h2 className="pokemon-name">
+          {pokemon.name}
+          {pokemon.isLegendary && (
+            <span className="legendary-star"> ⭐</span>
+          )}
+        </h2>
+
+        {/* Pokemon Image */}
         <Image
-          className=""
-          src={pokemon.sprites?.frontDefault}
-          alt="pokemon.name"
+          className="pokemon-image"
+          src={pokemon.sprites?.frontDefault || "/pokeball_black.png"}
+          alt={pokemon.name}
           width={150}
           height={150}
         />
-        <p>{pokemon.generation}</p>
-        <div>
+
+        {/* Pokemon Types */}
+        <div className="pokemon-types">
           {pokemon.types.map((type, index) => (
-            <p key={index}>{type.translatedName}</p>
+            <span key={index} className={`type-badge type-${type.name.toLowerCase()}`}>
+              {type.translatedName || type.name}
+            </span>
           ))}
         </div>
-        <p>Peso: {pokemon.weight / 10} kilos</p>
-        <p>Altura: {pokemon.height / 10} metros</p>
+
+        {/* Generation Badge */}
+        <div className="generation-badge">
+          {pokemon.generation}
+        </div>
+
+        {/* Pokemon Stats */}
+        <div className="pokemon-stats">
+          <div className="stat-item">
+            <span className="stat-label">Peso</span>
+            <span className="stat-value">{(pokemon.weight / 10).toFixed(1)} kg</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">Altura</span>
+            <span className="stat-value">{(pokemon.height / 10).toFixed(1)} m</span>
+          </div>
+        </div>
       </div>
+
+      {/* Pokemon Details Modal */}
       {modalStack.map((pokemonName, index) => (
         <PokemonDetailsItem
           key={`${pokemonName}-${index}`}
@@ -60,6 +93,8 @@ export default function PokemonCard({
           onOpenEvolution={handleOpenNestedCard}
         />
       ))}
-    </div>
+    </>
   );
-}
+});
+
+export default PokemonCard;

@@ -1,20 +1,22 @@
 "use client";
-import { use, useEffect, useState } from "react";
-import { pokemonServiceGetDetailsByName, pokemonServiceGetURL } from "../services/pokemonService";
+import { useEffect, useState, Fragment } from "react";
+import { pokemonServiceGetDetailsByName } from "../services/pokemonService";
 import { PokemonDetails } from "@/app/interfaces/pokemonInterface";
 import Image from "next/image";
+
+interface PokemonDetailsItemProps {
+  pokemonName?: string;
+  pokemonDetailsItem?: PokemonDetails;
+  onClose?: () => void;
+  onOpenEvolution?: (pokemonName: string) => void;
+}
 
 export default function PokemonDetailsItem({
   pokemonName,
   pokemonDetailsItem,
   onClose,
   onOpenEvolution,
-}: {
-  pokemonName?: string
-  pokemonDetailsItem?: PokemonDetails;
-  onClose: any
-  onOpenEvolution?: (pokemonName: string) => void
-}) {
+}: PokemonDetailsItemProps) {
 
   const [currentPokemon, setCurrentPokemon] = useState<PokemonDetails | null>(pokemonDetailsItem || null)
   const [loading, setLoading] = useState(false)
@@ -47,13 +49,18 @@ export default function PokemonDetailsItem({
     }
   }
 
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget && onClose) {
+      onClose();
+    }
+  };
+
   if (loading) {
     return (
-      <div 
-        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
-      >
-        <div className="bg-white p-4 rounded">
-          <p>Cargando...</p>
+      <div className="modal-overlay" onClick={handleOverlayClick}>
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p className="loading-text">Cargando Pokémon...</p>
         </div>
       </div>
     );
@@ -61,50 +68,110 @@ export default function PokemonDetailsItem({
 
   if (!currentPokemon) return null
 
-  console.log('DAME EL POKEMON ACTUAL')
-  console.log(currentPokemon)
-
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="border rounded-lg p-6">
-        <h1 className="text-2xl font-bold mb-4">{currentPokemon.name}</h1>
-        <Image
-          className=""
-          src={currentPokemon.sprites?.frontDefault}
-          alt="pokemon.name"
-          width={150}
-          height={150}
-        />
-        <p>{currentPokemon.generation}</p>
-        <div>
-          {currentPokemon.types.map((type, index) => (
-            <p key={index}>{type.name}</p>
-          ))}
+    <div className="modal-overlay" onClick={handleOverlayClick}>
+      <div className="modal-content">
+        {/* Modal Header */}
+        <div className="modal-header">
+          <button onClick={onClose} className="modal-close">
+            ✕
+          </button>
+          
+          <h1 className="modal-pokemon-name">
+            {currentPokemon.name}
+            {/* {currentPokemon.isLegendary ? '⭐' : ''} */}
+            {currentPokemon.isLegendary && (
+              <span className="legendary-star"> ⭐</span>
+            )}
+          </h1>
+          
+          <div className="pokemon-types">
+            {currentPokemon.types.map((type, index) => (
+              <span key={index} className={`type-badge type-${type.name.toLowerCase()}`}>
+                {type.translatedName || type.name}
+              </span>
+            ))}
+          </div>
+
+          <Image
+            className="modal-pokemon-image"
+            src={currentPokemon.sprites?.frontDefault || "/pokeball_black.png"}
+            alt={currentPokemon.name}
+            width={200}
+            height={200}
+          />
+
+          <div className="generation-badge">
+            {currentPokemon.generation}
+          </div>
         </div>
-        <br />
-        <div>
-          {currentPokemon.evolutionChain.evolutions.map((evolution) => (
-            <div className="evolutionCard" key={evolution.id} onClick={() => handleEvolutionClick(evolution.name)}>
-              <Image
-                className=""
-                src={evolution.sprites?.frontDefault}
-                alt={String(evolution.id)}
-                width={100}
-                height={100}
-              />
+
+        {/* Basic Info */}
+        <div className="modal-basic-info">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+            <div className="stat-item">
+              <span className="stat-label">Peso</span>
+              <span className="stat-value">{(currentPokemon.weight / 10).toFixed(1)} kg</span>
             </div>
-          ))}
+            <div className="stat-item">
+              <span className="stat-label">Altura</span>
+              <span className="stat-value">{(currentPokemon.height / 10).toFixed(1)} m</span>
+            </div>
+          </div>
         </div>
-        <br />
-        <div>
-          {currentPokemon.stats.map((stat, index) => (
-            <p key={index}>
-              {stat.translatedName}:{stat.baseStat}
-            </p>
-          ))}
+
+        {/* Pokemon Stats */}
+        <div className="stats-section">
+          <h3 className="stats-title">Estadísticas base</h3>
+          <div className="stats-grid">
+            {currentPokemon.stats.map((stat, index) => {
+              const baseStat = stat.baseStat || 0;
+              const percentage = Math.min((baseStat / 255) * 100, 100); // Max stat is usually 255
+              return (
+                <div key={index} className="stat-row">
+                  <span className="stat-name">
+                    {stat.translatedName || stat.name}
+                  </span>
+                  <div className="stat-bar">
+                    <div 
+                      className="stat-fill" 
+                      style={{ width: `${percentage}%` }}
+                    ></div>
+                  </div>
+                  <span className="stat-value">{baseStat}</span>
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <br />
-        <button onClick={onClose}>Close</button>
+
+        {/* Evolution Chain */}
+        {currentPokemon.evolutionChain.evolutions.length > 1 && (
+          <div className="evolution-chain">
+            <h3 className="evolution-title">Cadena evolutiva</h3>
+            <div className="evolution-list">
+              {currentPokemon.evolutionChain.evolutions.map((evolution, index) => (
+                <Fragment key={evolution.id}>
+                  {index > 0 && <div className="evolution-arrow">→</div>}
+                  <div 
+                    className={`evolution-card ${evolution.id === currentPokemon.id ? 'current' : ''}`}
+                    onClick={() => handleEvolutionClick(evolution.name)}
+                  >
+                    <Image
+                      src={evolution.sprites?.frontDefault || "/pokeball_black.png"}
+                      alt={evolution.name}
+                      width={80}
+                      height={80}
+                    />
+                    <p style={{ fontSize: '0.875rem', fontWeight: '600', marginTop: '0.5rem', textTransform: 'capitalize' }}>
+                      {evolution.name}
+                    </p>
+                  </div>
+                </Fragment>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

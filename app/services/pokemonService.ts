@@ -28,7 +28,7 @@ export async function pokemonServiceGetAll(
 
   const pokemonResults: PokemonDetailsPaginated = {
     pokemonData: await Promise.all(
-      pokemonList.results.map(async (pokemon) => pokemonServiceGetDetailsByName(pokemon.name))
+      pokemonList.results.map(async (pokemon: any) => pokemonServiceGetDetailsByName(pokemon.name))
     ),
     offset,
     limit,
@@ -72,9 +72,9 @@ export async function pokemonServiceGetSpeciesData(
   const pokemonDetails: PokemonSpeciesDetails = {
     id: pokemonItem.id,
     name: name,
-    generation: getGeneration(Number(pokemonItem.generation.url?.match(/generation\/(\d+)\//)[1])),
+    generation: getGeneration(Number(pokemonItem.generation.url?.match(/generation\/(\d+)\//)?.[1] || '0')),
     isLegendary: pokemonItem.is_legendary,
-    evolutionChainID: Number(pokemonItem.evolution_chain.url.match(/evolution-chain\/(\d+)\//)[1]),
+    evolutionChainID: Number(pokemonItem.evolution_chain.url.match(/evolution-chain\/(\d+)\//)?.[1] || '0'),
   };
 
   return pokemonDetails;
@@ -94,7 +94,7 @@ export async function pokemonServiceGetEvolutionChainData(id: number) {
   };
 }
 
-function getEvolutionNames(evolutionChain) {
+function getEvolutionNames(evolutionChain: any) {
   const evolutionPokeID = Number(evolutionChain.species.url.match(/pokemon-species\/(\d+)\//)[1])
   const evolutions: Pokemon[] = [
     {
@@ -108,7 +108,7 @@ function getEvolutionNames(evolutionChain) {
   ];
 
   if (evolutionChain.evolves_to && evolutionChain.evolves_to.length > 0) {
-    evolutionChain.evolves_to.forEach((evolution) => {
+    evolutionChain.evolves_to.forEach((evolution: any) => {
       evolutions.push(...getEvolutionNames(evolution));
     });
   }
@@ -124,8 +124,8 @@ export async function pokemonServiceGetStatsData(
   );
   const pokemonStats = await pokemonStats_raw.json();
 
-  const types = pokemonStats.types.map((element) => getType(element.type.name));
-  const stats: Stat[] = pokemonStats.stats.map((element) => {
+  const types = pokemonStats.types.map((element: any) => getType(element.type.name));
+  const stats: Stat[] = pokemonStats.stats.map((element: any) => {
     return {
       name: element.stat.name,
       baseStat: element.base_stat,

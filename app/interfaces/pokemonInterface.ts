@@ -49,7 +49,7 @@ export interface PokemonSpeciesDetailsRaw {
   evolution_chain: EvolutionChain;
   evolves_from_species: null;
   flavor_text_entries: FlavorTextEntry[];
-  form_descriptions: any[];
+  form_descriptions: FormDescription[];
   forms_switchable: boolean;
   gender_rate: number;
   genera: Genus[];
@@ -130,6 +130,11 @@ export interface EvolutionChainData {
 }
 
 export interface Sprites {
-  frontDefault?: string;
-  backDefault?: string;
+  frontDefault?: string | null;
+  backDefault?: string | null;
+}
+
+export interface FormDescription {
+  description?: string;
+  language?: Color;
 }

@@ -54,7 +54,7 @@ const stats = [
 ]
 
 function getGeneration(generationID: number): string {
-  return generations.find(generation => generation.id === generationID).generation
+  return generations.find(generation => generation.id === generationID)?.generation || ''
 }
 
 function getType(typeName: string): any {
@@ -66,23 +66,19 @@ function getType(typeName: string): any {
   }
 }
 
-function getTypeTranslatedName(typeName: string): string {
-  return types.find(type => type.type === typeName)?.translatedType
-}
-
 function getStatTranslatedName(statName: string): string {
-  return stats.find(stat => stat.stat === statName)?.translatedStat
+  return stats.find(stat => stat.stat === statName)?.translatedStat || ''
 }
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function pokemonServiceGetAll(acc = [], offset: number = 0, limit: number = 50): Promise<any[]> {
+async function pokemonServiceGetAll(acc: any[] = [], offset: number = 0, limit: number = 50): Promise<any[]> {
   const pokemonList_raw = await fetch(`https://pokeapi.co/api/v2/pokemon-species?offset=${offset}&limit=${limit}`)
   const pokemonList = await pokemonList_raw.json()
   
-  const pokemonResults: any[] = await Promise.all(pokemonList.results.map(async pokemon => pokemonServiceGetDetailsByName(pokemon.name)))
+  const pokemonResults: any[] = await Promise.all(pokemonList.results.map(async (pokemon: any) => pokemonServiceGetDetailsByName(pokemon.name)))
 
   acc = acc.concat(pokemonResults)
 
@@ -152,9 +148,9 @@ async function pokemonServiceGetEvolutionChainData(id: number) {
   };
 }
 
-function getEvolutionNames(evolutionChain) {
+function getEvolutionNames(evolutionChain: any) {
   const evolutionPokeID = Number(evolutionChain.species.url.match(/pokemon-species\/(\d+)\//)[1])
-  const evolutions: [] = [
+  const evolutions: any[] = [
     {
       id: evolutionPokeID,
       name: evolutionChain.species.name,
@@ -166,7 +162,7 @@ function getEvolutionNames(evolutionChain) {
   ];
 
   if (evolutionChain.evolves_to && evolutionChain.evolves_to.length > 0) {
-    evolutionChain.evolves_to.forEach((evolution) => {
+    evolutionChain.evolves_to.forEach((evolution: any) => {
       evolutions.push(...getEvolutionNames(evolution));
     });
   }
@@ -187,8 +183,8 @@ async function pokemonServiceGetStatsData(
 
   const pokemonStats = await pokemonStats_raw.json();
 
-  const types = pokemonStats.types.map((element) => getType(element.type.name));
-  const stats: any[] = pokemonStats.stats.map((element) => {
+  const types = pokemonStats.types.map((element: any) => getType(element.type.name));
+  const stats: any[] = pokemonStats.stats.map((element: any) => {
     return {
       name: element.stat.name,
       baseStat: element.base_stat,

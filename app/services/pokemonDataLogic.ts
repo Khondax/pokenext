@@ -54,22 +54,22 @@ export const stats = [
 ]
 
 export function getGeneration(generationID: number): string {
-  return generations.find(generation => generation.id === generationID).generation
+  return generations.find(generation => generation.id === generationID)?.generation || ''
 }
 
 export function getType(typeName: string): Type {
   const findType = types.find(type => type.type === typeName)
   return {
-    name: findType?.type,
+    name: findType?.type || typeName,
     translatedName: findType?.translatedType,
     color: findType?.color
   }
 }
 
 export function getTypeTranslatedName(typeName: string): string {
-  return types.find(type => type.type === typeName)?.translatedType
+  return types.find(type => type.type === typeName)?.translatedType || ''
 }
 
 export function getStatTranslatedName(statName: string): string {
-  return stats.find(stat => stat.stat === statName)?.translatedStat
+  return stats.find(stat => stat.stat === statName)?.translatedStat || ''
 }
