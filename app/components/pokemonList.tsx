@@ -69,7 +69,9 @@ export default function PokemonList({pokemonData, readFromFile}: PokemonListProp
         element.name.toLowerCase().includes(filter)
       );
       const matchesType = selectedTypes.length === 0 || 
-        pokemon.types.some(type => selectedTypes.includes(type.name.toLowerCase()));
+        selectedTypes.every(selectedType => 
+          pokemon.types.some(type => type.name.toLowerCase() === selectedType)
+        );
       const matchesGeneration = selectedGeneration.length === 0 || 
         selectedGeneration.includes(pokemon.generation);
 
