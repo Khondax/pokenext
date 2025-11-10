@@ -26,9 +26,9 @@ Este repositorio contiene una pokedex en NextJS para una prueba técnica.
 - [x]     - Resaltar la evolución actual seleccionada
 - [x]   - Stats
 - [x] 6. Al volver al listado general se debe mantener el estado, filtros y contenido
-- [ ] 7. Añadir documentación general, de uso y ejecución en local
-- [ ] 8. Añadir tests
-- [ ] 9. Mejorar la interfaz
+- [x] 7. Añadir documentación general, de uso y ejecución en local
+- [ ] 8. Añadir tests?
+- [ ] 9. Mejorar la interfaz?
 - [x]   - Pintar las tarjetas de cada pokemon con el color del tipo
 - [x]   - Mejorar modal
 - [x]   - Mover todos los componentes posibles a ficheros individuales

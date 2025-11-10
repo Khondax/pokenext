@@ -24,7 +24,7 @@ const PokemonCard = memo(function PokemonCard({ pokemon }: PokemonCardProps) {
     setModalStack(prev => prev.slice(0, -1))
   }
 
-  // Get the primary type for theming
+  // Pilla el primer tipo del pokemon para indicar el color
   const primaryType = pokemon.types[0]?.name?.toLowerCase() || 'normal';
   
   return (

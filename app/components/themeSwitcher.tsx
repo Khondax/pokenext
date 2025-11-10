@@ -3,7 +3,6 @@ import { useState, useEffect, memo } from 'react';
 
 const ThemeSwitcher = memo(function ThemeSwitcher() {
   const [theme, setTheme] = useState(() => {
-    // Initialize theme from localStorage if available (SSR safe)
     if (typeof window !== 'undefined') {
       return localStorage.getItem('theme') || 'light';
     }
@@ -11,7 +10,6 @@ const ThemeSwitcher = memo(function ThemeSwitcher() {
   });
 
   useEffect(() => {
-    // Apply theme to document
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme]);

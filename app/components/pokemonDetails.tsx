@@ -25,15 +25,12 @@ export default function PokemonDetailsItem({
   useEffect(() => {
     if (pokemonName && !pokemonDetailsItem) {
       setLoading(true);
-      // Buscar el pokemon por ID en la cadena evolutiva del pokemon inicial
-      // O hacer una llamada a la API si es necesario
       loadPokemonByName(pokemonName);
     }
   }, [pokemonName, pokemonDetailsItem]);
 
   const loadPokemonByName = async (evolutionName: string) => {
     try {
-      // Si tenemos pokemonDetailsItem, buscar en su cadena evolutiva primero
       const fullDetails = await pokemonServiceGetDetailsByName(evolutionName);
       setCurrentPokemon(fullDetails);
     } catch (error) {
@@ -79,7 +76,6 @@ export default function PokemonDetailsItem({
           
           <h1 className="modal-pokemon-name">
             {currentPokemon.name}
-            {/* {currentPokemon.isLegendary ? '⭐' : ''} */}
             {currentPokemon.isLegendary && (
               <span className="legendary-star"> ⭐</span>
             )}
@@ -126,7 +122,7 @@ export default function PokemonDetailsItem({
           <div className="stats-grid">
             {currentPokemon.stats.map((stat, index) => {
               const baseStat = stat.baseStat || 0;
-              const percentage = Math.min((baseStat / 255) * 100, 100); // Max stat is usually 255
+              const percentage = Math.min((baseStat / 255) * 100, 100); // En teoría el valor máximo de una stat es 255
               return (
                 <div key={index} className="stat-row">
                   <span className="stat-name">
