@@ -10,37 +10,18 @@ export interface SelectOption {
 export const getSelectStyles = (): StylesConfig<SelectOption, true> => ({
   option: (provided) => ({
     ...provided,
-    backgroundColor: 'transparent !important',
     padding: '4px !important',
     ':hover': {
-      backgroundColor: 'transparent !important'
+      backgroundColor: 'grey !important'
     }
   }),
   multiValue: (provided, { data }) => ({
     ...provided,
     backgroundColor: data.color,
-    borderRadius: '16px',
-    padding: '4px 10px',
-    margin: '2px',
     border: `2px solid ${data.color}`,
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-  }),
-  multiValueLabel: (provided) => ({
-    ...provided,
-    color: 'white',
-    fontWeight: '700',
-    fontSize: '0.75rem',
-    textTransform: 'uppercase',
-    letterSpacing: '0.5px',
-    textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
-    padding: '2px 4px'
   }),
   multiValueRemove: (provided) => ({
     ...provided,
-    color: 'white',
-    backgroundColor: 'rgba(0,0,0,0.2)',
-    borderRadius: '50%',
-    margin: '0 0 0 4px',
     ':hover': {
       backgroundColor: 'rgba(0,0,0,0.4)',
       color: 'white'

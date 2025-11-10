@@ -10,7 +10,8 @@
   --card-background: #ffffff;
   --header-background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
   --body-background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-  --filter-background: #ffffff;
+  --filter-background: #dfdfdf;
+  /* --filter-background: #ffffff; */
   --border-color: #e2e8f0;
   --shadow-color: rgba(0, 0, 0, 0.1);
   --text-muted: #64748b;
@@ -43,7 +44,8 @@
   --card-background: #2c3658e8;
   --header-background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
   --body-background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  --filter-background: #1e293b;
+  --filter-background: #424e74e8;
+  /* --filter-background: #1e293b; */
   --border-color: #334155;
   --shadow-color: rgba(0, 0, 0, 0.3);
   --text-muted: #94a3b8;
@@ -155,95 +157,74 @@ body {
 .custom-select {
   @apply text-base;
 }
-.custom-select .css-control {
-  @apply border-[color:var(--border-color)] shadow-[0_2px_8px_var(--shadow-color)] min-h-[48px] rounded-xl border-2 border-solid;
-  background: var(--card-background) !important;
+.custom-select .css__control {
+  /* @apply border-[color:var(--border-color)] shadow-[0_2px_8px_var(--shadow-color)] min-h-[48px] rounded-xl border-2 border-solid; */
+  background: var(--card-background);
+  background-color: var(--card-background);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  min-height: 48px;
 }
-.custom-select .css-control--is-focused {
+.custom-select .css__control--is-focused {
   @apply border-[color:var(--primary)] shadow-[0_0_0_3px_rgba(239,68,68,0.1)];
 }
-.custom-select .css-menu {
-  @apply border-[color:var(--border-color)] shadow-[0_8px_32px_var(--shadow-color)] z-[99999] absolute rounded-xl border-2 border-solid;
-  background: var(--card-background) !important;
+.custom-select .css__menu {
+  /* @apply border-[color:var(--border-color)] shadow-[0_8px_32px_var(--shadow-color)] z-[99999] absolute rounded-xl border-2 border-solid; */
+  background: var(--card-background);
+  background-color: var(--card-background);
 }
-.custom-select .css-option {
+.custom-select .css__option {
   @apply cursor-pointer text-[color:var(--foreground)] px-4 py-3;
-  background: var(--card-background) !important;
+  background: var(--filter-background) !important;
 }
-.custom-select .css-option--is-focused {
+.custom-select .css__option--is-focused {
   @apply bg-[rgba(239,68,68,0.1)] text-[color:var(--primary)];
 }
-.custom-select .css-option--is-selected {
+.custom-select .css__option--is-selected {
   @apply bg-[color:var(--primary)] text-[white];
 }
-.custom-select .css-multi-value {
-  @apply bg-[rgba(239,68,68,0.1)] rounded-md;
+.custom-select .css__multi-value {
+  /* @apply bg-[rgba(239,68,68,0.1)] rounded-md; */
+  border-radius: 16px;
+  padding: 4px 10px;
+  margin: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-.custom-select .css-multi-value__label {
-  @apply text-[white] font-medium;
+.custom-select .css__multi-value__label {
+  color: white,;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  padding: 2px 4px;
+}
+.custom-select .css__multi-value__remove {
+  /* @apply text-[color:var(--primary)] cursor-pointer hover:bg-[color:var(--primary)] hover:text-[white]; */
+  color: white;
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 50%;
+}
 
-  /* color: var(--primary) !important; */
-}
-.custom-select .css-multi-value__remove {
-  @apply text-[color:var(--primary)] cursor-pointer hover:bg-[color:var(--primary)] hover:text-[white];
-}
-
-/* Additional select styling for dark mode */
-.custom-select .css-placeholder {
+.custom-select .css__placeholder {
   @apply text-[color:var(--text-muted)];
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
-.custom-select .css-single-value {
+.custom-select .css__single-value {
   @apply text-[color:var(--foreground)];
 }
-.custom-select .css-input-container {
+.custom-select .css__input-container {
   @apply text-[color:var(--foreground)];
 }
-.custom-select .css-indicator-separator {
+.custom-select .css__indicator-separator {
   @apply bg-[color:var(--border-color)];
 }
-.custom-select .css-dropdown-indicator {
+.custom-select .css__dropdown-indicator {
   @apply text-[color:var(--text-muted)];
 }
-.custom-select .css-clear-indicator {
+.custom-select .css__clear-indicator {
   @apply text-[color:var(--text-muted)];
-}
-
-/* Enhanced dark mode support for custom select */
-[data-theme="dark"] .custom-select .css-control {
-  @apply bg-[color:var(--card-background)] border-[color:var(--border-color)];
-}
-[data-theme="dark"] .custom-select .css-control--is-focused {
-  @apply border-[color:var(--primary)] shadow-[0_0_0_3px_rgba(239,68,68,0.1)];
-}
-[data-theme="dark"] .custom-select .css-menu {
-  @apply bg-[color:var(--card-background)] border-[color:var(--border-color)];
-}
-[data-theme="dark"] .custom-select .css-option {
-  @apply bg-[color:var(--card-background)] text-[color:var(--foreground)];
-}
-[data-theme="dark"] .custom-select .css-option--is-focused {
-  @apply bg-[rgba(239,68,68,0.15)] text-[color:var(--primary)];
-}
-[data-theme="dark"] .custom-select .css-option--is-selected {
-  @apply bg-[color:var(--primary)] text-[white];
-}
-[data-theme="dark"] .custom-select .css-multi-value {
-  @apply bg-[rgba(239,68,68,0.2)];
-}
-[data-theme="dark"] .custom-select .css-single-value {
-  @apply text-[color:var(--foreground)];
-}
-[data-theme="dark"] .custom-select .css-placeholder {
-  @apply text-[color:var(--text-muted)];
-}
-[data-theme="dark"] .custom-select .css-input {
-  @apply text-[color:var(--foreground)];
-}
-[data-theme="dark"] .custom-select .css-dropdown-indicator {
-  @apply text-[color:var(--text-muted)] hover:text-[color:var(--foreground)];
-}
-[data-theme="dark"] .custom-select .css-clear-indicator {
-  @apply text-[color:var(--text-muted)] hover:text-[color:var(--foreground)];
 }
 
 /* ====== POKEMON GRID ====== */
