@@ -58,7 +58,7 @@
   @apply box-border m-0 p-0;
 }
 body {
-  @apply min-h-screen text-[color:var(--foreground)] leading-[1.6];
+  @apply min-h-screen text-(--foreground) leading-[1.6];
   background: var(--body-background);
   font-family: var(--font-geist-sans), "Segoe UI", Tahoma, Geneva, Verdana,
     sans-serif;
@@ -82,7 +82,7 @@ body {
 
 /* ====== THEME SWITCHER ====== */
 .theme-switcher {
-  @apply absolute -translate-y-2/4 cursor-pointer transition-all duration-[0.3s] ease-[ease] backdrop-blur-[10px] p-2 rounded-[25px] border-2 border-solid border-[rgba(255,255,255,0.2)] right-8 top-2/4 hover:-translate-y-2/4 hover:scale-105;
+  @apply absolute -translate-y-2/4 cursor-pointer transition-all duration-300 ease-[ease] backdrop-blur-[10px] p-2 rounded-[25px] border-2 border-solid border-[rgba(255,255,255,0.2)] right-8 top-2/4 hover:-translate-y-2/4 hover:scale-105;
   background: rgba(255, 255, 255, 0.1);
 }
 .theme-switcher:hover {
@@ -92,7 +92,7 @@ body {
   @apply flex items-center gap-2 px-3 py-1;
 }
 .theme-icon {
-  @apply text-[1.2rem] transition-all duration-[0.3s] ease-[ease];
+  @apply text-[1.2rem] transition-all duration-300 ease-[ease];
 }
 .theme-text {
   @apply text-[white] text-sm font-medium hidden sm:block;
@@ -128,14 +128,14 @@ body {
 
 /* ====== SEARCH AND FILTERS ====== */
 .search-filters-container {
-  @apply shadow-[0_8px_32px_var(--shadow-color)] backdrop-blur-[10px] border border-[color:var(--border-color)] relative z-50 mb-8 p-8 rounded-2xl border-solid;
+  @apply shadow-[0_8px_32px_var(--shadow-color)] backdrop-blur-[10px] border border-(--border-color) relative z-50 mb-8 p-8 rounded-2xl border-solid;
   background: var(--filter-background);
 }
 .search-box {
   @apply w-full mb-6;
 }
 .search-input {
-  @apply w-full border-[color:var(--border-color)] text-[1.1rem] transition-all duration-[0.3s] ease-[ease] text-[color:var(--foreground)] shadow-[0_2px_8px_var(--shadow-color)] px-6 py-4 rounded-xl border-2 border-solid focus:border-[color:var(--primary)] focus:shadow-[0_0_0_3px_rgba(239,68,68,0.1)] focus:-translate-y-px;
+  @apply w-full border-(--border-color) text-[1.1rem] transition-all duration-300 ease-[ease] text-(--foreground) shadow-[0_2px_8px_var(--shadow-color)] px-6 py-4 rounded-xl border-2 border-solid focus:border-(--primary) focus:shadow-[0_0_0_3px_rgba(239,68,68,0.1)] focus:-translate-y-px;
   background: var(--card-background);
 }
 .search-input:focus {
@@ -158,73 +158,63 @@ body {
   @apply text-base;
 }
 .custom-select .css__control {
-  /* @apply border-[color:var(--border-color)] shadow-[0_2px_8px_var(--shadow-color)] min-h-[48px] rounded-xl border-2 border-solid; */
+  @apply bg-(--card-background) min-h-12 border-(--border-color) shadow-[var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)] rounded-xl border-2 border-solid;
   background: var(--card-background);
-  background-color: var(--card-background);
-  border: 2px solid var(--border-color);
-  border-radius: 12px;
-  min-height: 48px;
+  border-style: var(--tw-border-style);
+  --tw-border-style: solid;
+  --tw-shadow: 0 2px 8px var(--tw-shadow-color, var(--shadow-color));
 }
 .custom-select .css__control--is-focused {
-  @apply border-[color:var(--primary)] shadow-[0_0_0_3px_rgba(239,68,68,0.1)];
+  @apply border-(--primary) shadow-[0_0_0_3px_rgba(239,68,68,0.1)];
 }
 .custom-select .css__menu {
-  /* @apply border-[color:var(--border-color)] shadow-[0_8px_32px_var(--shadow-color)] z-[99999] absolute rounded-xl border-2 border-solid; */
+  @apply bg-(--card-background) absolute z-99999 rounded-xl border-(--border-color) shadow-[var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)] border-2 border-solid;
   background: var(--card-background);
-  background-color: var(--card-background);
+  border-style: var(--tw-border-style);
+  --tw-border-style: solid;
+  --tw-shadow: 0 8px 32px var(--tw-shadow-color, var(--shadow-color));
 }
 .custom-select .css__option {
-  @apply cursor-pointer text-[color:var(--foreground)] px-4 py-3;
+  @apply cursor-pointer text-(--foreground);
+  padding-inline: calc(var(--spacing) * 4);
+  padding-block: calc(var(--spacing) * 3);
   background: var(--filter-background) !important;
 }
 .custom-select .css__option--is-focused {
-  @apply bg-[rgba(239,68,68,0.1)] text-[color:var(--primary)];
+  @apply bg-[rgba(239,68,68,0.1)] text-(--primary);
 }
 .custom-select .css__option--is-selected {
-  @apply bg-[color:var(--primary)] text-[white];
+  @apply bg-(--primary) text-[white];
 }
 .custom-select .css__multi-value {
-  /* @apply bg-[rgba(239,68,68,0.1)] rounded-md; */
-  border-radius: 16px;
-  padding: 4px 10px;
-  margin: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  @apply shadow-[0_2px_4px_rgba(0,0,0,0.1)] m-5 px-2.5 py-1 rounded-2xl;
 }
 .custom-select .css__multi-value__label {
-  color: white,;
-  font-weight: 700;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-  padding: 2px 4px;
+  @apply text-[white,] font-bold text-xs uppercase tracking-[0.5px] px-1 py-0.5;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 .custom-select .css__multi-value__remove {
-  /* @apply text-[color:var(--primary)] cursor-pointer hover:bg-[color:var(--primary)] hover:text-[white]; */
-  color: white;
-  background-color: rgba(0,0,0,0.2);
-  border-radius: 50%;
+  @apply text-[white] bg-[rgba(0,0,0,0.2)] rounded-[50%];
 }
 
 .custom-select .css__placeholder {
-  @apply text-[color:var(--text-muted)];
-  font-weight: 500;
-  letter-spacing: 0.5px;
+  @apply text-(--text-muted) font-medium tracking-[0.5px];
 }
+
 .custom-select .css__single-value {
-  @apply text-[color:var(--foreground)];
+  @apply text-(--foreground);
 }
 .custom-select .css__input-container {
-  @apply text-[color:var(--foreground)];
+  @apply text-(--foreground);
 }
 .custom-select .css__indicator-separator {
-  @apply bg-[color:var(--border-color)];
+  @apply bg-(--border-color);
 }
 .custom-select .css__dropdown-indicator {
-  @apply text-[color:var(--text-muted)];
+  @apply text-(--text-muted);
 }
 .custom-select .css__clear-indicator {
-  @apply text-[color:var(--text-muted)];
+  @apply text-(--text-muted);
 }
 
 /* ====== POKEMON GRID ====== */
@@ -239,7 +229,7 @@ body {
 
 /* ====== POKEMON CARDS ====== */
 .pokemon-card {
-  @apply shadow-[0_8px_32px_var(--shadow-color)] transition-all duration-[0.3s] ease-[ease] cursor-pointer relative overflow-hidden min-h-[380px] flex flex-col items-center text-center p-6 rounded-[20px] hover:-translate-y-2 hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)] hover:scale-[1.02] before:content-[''] before:absolute before:h-3 before:rounded-[20px_20px_0_0] before:top-0 before:inset-x-0;
+  @apply shadow-[0_8px_32px_var(--shadow-color)] transition-all duration-300 ease-[ease] cursor-pointer relative overflow-hidden min-h-[380px] flex flex-col items-center text-center p-6 rounded-[20px] hover:-translate-y-2 hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)] hover:scale-[1.02] before:content-[''] before:absolute before:h-3 before:rounded-[20px_20px_0_0] before:top-0 before:inset-x-0;
   background: var(--card-background);
 }
 .pokemon-card::before {
@@ -250,7 +240,7 @@ body {
   background: rgba(0, 0, 0, 0.7);
 }
 .pokemon-name {
-  @apply text-2xl font-bold text-[color:var(--foreground)] capitalize flex items-center justify-center mb-2;
+  @apply text-2xl font-bold text-(--foreground) capitalize flex items-center justify-center mb-2;
 }
 .legendary-star {
   @apply text-[1.2rem] inline-flex items-center align-middle animate-[sparkle_2s_ease-in-out_infinite] ml-2;
@@ -262,7 +252,7 @@ body {
 }
 
 .pokemon-image {
-  @apply w-[150px] h-[150px] transition-transform duration-[0.3s] ease-[ease] mx-0 my-4;
+  @apply w-[150px] h-[150px] transition-transform duration-300 ease-[ease] mx-0 my-4;
 }
 .pokemon-card:hover .pokemon-image {
   @apply scale-110;
@@ -284,7 +274,7 @@ body {
   @apply text-sm font-semibold uppercase tracking-[0.5px] mb-1;
 }
 .stat-value {
-  @apply text-[1.1rem] font-bold text-[color:var(--foreground)];
+  @apply text-[1.1rem] font-bold text-(--foreground);
 }
 .generation-badge {
   @apply text-[white] text-xs font-semibold mt-2 px-3 py-1 rounded-xl;
@@ -335,7 +325,7 @@ body {
 
 /* ====== MODAL STYLES ====== */
 .modal-overlay {
-  @apply fixed flex items-center justify-center z-[1000] backdrop-blur animate-[fadeIn_0.3s_ease] inset-0;
+  @apply fixed flex items-center justify-center z-1000 backdrop-blur animate-[fadeIn_0.3s_ease] inset-0;
   background: rgba(0, 0, 0, 0.8);
 }
 
@@ -365,14 +355,14 @@ body {
   @apply text-center relative pt-8 pb-4 px-8;
 }
 .modal-close {
-  @apply absolute border-[color:var(--border-color)] w-10 h-10 flex items-center justify-center cursor-pointer transition-all duration-[0.2s] ease-[ease] text-[1.2rem] text-[color:var(--text-muted)] rounded-[50%] border-2 border-solid right-4 top-4 hover:text-[color:var(--foreground)] hover:scale-110;
+  @apply absolute border-(--border-color) w-10 h-10 flex items-center justify-center cursor-pointer transition-all duration-200 ease-[ease] text-[1.2rem] text-(--text-muted) rounded-[50%] border-2 border-solid right-4 top-4 hover:text-(--foreground) hover:scale-110;
   background: var(--background);
 }
 .modal-close:hover {
   background: var(--border-color);
 }
 .modal-pokemon-name {
-  @apply text-[2rem] font-extrabold text-[color:var(--foreground)] capitalize flex items-center justify-center mb-2;
+  @apply text-[2rem] font-extrabold text-(--foreground) capitalize flex items-center justify-center mb-2;
 }
 .modal-pokemon-image {
   @apply w-[200px] h-[200px] mx-auto my-4;
@@ -390,14 +380,14 @@ body {
   @apply flex gap-2 overflow-x-auto items-center justify-center px-0 py-4;
 }
 .evolution-card {
-  @apply shrink-0 text-center cursor-pointer transition-all duration-[0.3s] ease-[ease] min-w-[100px] p-3 rounded-2xl border-2 border-solid border-transparent hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(0,0,0,0.15)];
+  @apply shrink-0 text-center cursor-pointer transition-all duration-300 ease-[ease] min-w-[100px] p-3 rounded-2xl border-2 border-solid border-transparent hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(0,0,0,0.15)];
   background: var(--card-background);
 }
 .evolution-card.current {
-  @apply border-[color:var(--primary)] shadow-[0_4px_16px_rgba(239,68,68,0.3)];
+  @apply border-(--primary) shadow-[0_4px_16px_rgba(239,68,68,0.3)];
 }
 .evolution-arrow {
-  @apply text-[1.6rem] text-[color:var(--text-muted)] flex items-center justify-center min-w-[2em] font-bold opacity-100;
+  @apply text-[1.6rem] text-(--text-muted) flex items-center justify-center min-w-[2em] font-bold opacity-100;
 }
 
 /* Stats */
@@ -409,7 +399,7 @@ body {
   background: var(--background);
 }
 .stats-title {
-  @apply text-xl font-bold text-[color:var(--foreground)] text-center mb-6;
+  @apply text-xl font-bold text-(--foreground) text-center mb-6;
 }
 .stats-grid {
   @apply grid gap-4;
@@ -418,7 +408,7 @@ body {
   @apply flex items-center gap-4;
 }
 .stat-name {
-  @apply min-w-[140px] font-semibold text-[color:var(--text-muted)] capitalize;
+  @apply min-w-[140px] font-semibold text-(--text-muted) capitalize;
 }
 .stat-bar {
   @apply flex-1 h-6 overflow-hidden relative rounded-xl;
@@ -429,7 +419,7 @@ body {
   background: linear-gradient(90deg, var(--primary), var(--secondary));
 }
 .stat-value {
-  @apply min-w-[40px] text-right font-bold text-[color:var(--foreground)];
+  @apply min-w-10 text-right font-bold text-(--foreground);
 }
 
 /* ====== LOADING STATES ====== */
@@ -437,10 +427,10 @@ body {
   @apply flex flex-col items-center justify-center min-h-[200px] gap-4;
 }
 .loading-spinner {
-  @apply w-12 h-12 border-slate-200 border-t-[color:var(--primary)] animate-spin rounded-[50%] border-4 border-solid;
+  @apply w-12 h-12 border-slate-200 border-t-(--primary) animate-spin rounded-[50%] border-4 border-solid;
 }
 .loading-text {
-  @apply text-[color:var(--text-muted)] font-medium;
+  @apply text-(--text-muted) font-medium;
 }
 
 
@@ -459,21 +449,21 @@ body {
   @apply flex justify-center gap-8 mb-4;
 }
 .footer-link {
-  @apply text-[rgba(255,255,255,0.7)] no-underline text-[0.9rem] transition-[color] duration-[0.3s] ease-[ease] hover:text-[white];
+  @apply text-[rgba(255,255,255,0.7)] no-underline text-[0.9rem] transition-[color] duration-300 ease-[ease] hover:text-[white];
 }
 
 /* ====== UTILITY CLASSES ====== */
 .scroll-to-top {
-  @apply fixed text-[white] w-14 h-14 flex items-center justify-center cursor-pointer shadow-[0_4px_16px_rgba(239,68,68,0.3)] transition-all duration-[0.3s] ease-[ease] z-[100] text-2xl font-[bold] rounded-[50%] border-[none] right-8 bottom-8 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(239,68,68,0.4)] hover:scale-105;
+  @apply fixed text-[white] w-14 h-14 flex items-center justify-center cursor-pointer shadow-[0_4px_16px_rgba(239,68,68,0.3)] transition-all duration-300 ease-[ease] z-100 text-2xl font-[bold] rounded-[50%] border-[none] right-8 bottom-8 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(239,68,68,0.4)] hover:scale-105;
   background: var(--primary);
 }
 
 /* ====== EMPTY STATE ====== */
 .empty-state {
-  @apply text-center text-[color:var(--text-muted)] px-8 py-16;
+  @apply text-center text-(--text-muted) px-8 py-16;
 }
 .empty-state h3 {
-  @apply text-2xl font-semibold text-[color:var(--foreground)] mb-2;
+  @apply text-2xl font-semibold text-(--foreground) mb-2;
 }
 .empty-state p {
   @apply text-base mb-8;
@@ -494,7 +484,7 @@ body {
     @apply p-6;
   }
   .modal-content {
-    @apply w-[calc(100%_-_2rem)] m-4;
+    @apply w-[calc(100%-2rem)] m-4;
   }
   .evolution-list {
     @apply justify-start;
