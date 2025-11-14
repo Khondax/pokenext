@@ -46,6 +46,17 @@ First, run this command if `/app/database/data.json` doesn't exists, so it can p
 node .\app\services\downloadPokemonData.ts
 ```
 
+Then, install all packages:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
 Next, run the development server:
 
 ```bash
